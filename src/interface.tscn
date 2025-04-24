@@ -1,0 +1,120 @@
+[gd_scene load_steps=13 format=3 uid="uid://cyjx0grfglmx0"]
+
+[ext_resource type="Script" uid="uid://5gied1irb1kv" path="res://interface.gd" id="1_pxv5b"]
+[ext_resource type="Texture2D" uid="uid://c60yhm64kstww" path="res://assets/icons/exit.svg" id="1_rh14k"]
+[ext_resource type="Texture2D" uid="uid://bjucn8avnxsrj" path="res://assets/icons/not_recording.svg" id="2_kyn48"]
+[ext_resource type="Texture2D" uid="uid://dgf20nmguseil" path="res://assets/icons/recording.svg" id="3_4rbkc"]
+[ext_resource type="Texture2D" uid="uid://bn3r6gkjyufus" path="res://assets/icons/play.svg" id="3_oi7g3"]
+[ext_resource type="Texture2D" uid="uid://crhcdcc7j3qor" path="res://assets/icons/pause.svg" id="5_pt1ru"]
+[ext_resource type="Script" uid="uid://b4b5br6515bpg" path="res://spectrum_panel.gd" id="7_jllm8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yxhdb"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.235294, 0.235294, 0.235294, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rh14k"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+bg_color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_yxhdb"]
+font_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oi7g3"]
+bg_color = Color(0.121569, 0.121569, 0.121569, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_yxhdb"]
+
+[node name="Interface" type="PanelContainer"]
+clip_children = 2
+offset_right = 500.0
+offset_bottom = 128.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yxhdb")
+script = ExtResource("1_pxv5b")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TitlePanel" type="PanelContainer" parent="VBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rh14k")
+
+[node name="HBob" type="HBoxContainer" parent="VBox/TitlePanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBox/TitlePanel/HBob"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "TITLE_WINDOW"
+label_settings = SubResource("LabelSettings_yxhdb")
+
+[node name="CloseButton" type="TextureButton" parent="VBox/TitlePanel/HBob"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture_normal = ExtResource("1_rh14k")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="MainHbox" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HFlowContainer" type="HFlowContainer" parent="VBox/MainHbox"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/v_separation = 8
+
+[node name="RecordButton" type="TextureButton" parent="VBox/MainHbox/HFlowContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("2_kyn48")
+texture_pressed = ExtResource("3_4rbkc")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="PlayButton" type="TextureButton" parent="VBox/MainHbox/HFlowContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("3_oi7g3")
+texture_pressed = ExtResource("5_pt1ru")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="SaveButton" type="Button" parent="VBox/MainHbox/HFlowContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+text = "BUTTON_SAVE"
+
+[node name="SpectrumPanel" type="PanelContainer" parent="VBox/MainHbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oi7g3")
+script = ExtResource("7_jllm8")
+
+[node name="Microphone" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamMicrophone_yxhdb")
+volume_db = 24.0
+autoplay = true
+bus = &"Record"
+
+[node name="RecordingPlayback" type="AudioStreamPlayer" parent="."]
